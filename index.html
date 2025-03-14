@@ -34,44 +34,45 @@
             margin-top: 15px;
             text-align: left;
         }
-        input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #fafafa;
-            margin-top: 5px;
-            -webkit-appearance: none;
-            -moz-appearance: textfield;
-        }
-        input[type="number"]::-webkit-inner-spin-button, 
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .styled-number {
+        .input-group {
             display: flex;
             align-items: center;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;
-            background: #fafafa;
             width: 100%;
-            margin-top: 5px;
+            height: 45px;
+            background: #fff;
         }
-        .styled-number input {
+        .input-group input {
             border: none;
-            outline: none;
-            flex: 1;
             background: transparent;
-            padding: 10px;
             font-size: 16px;
+            width: 100%;
+            outline: none;
             text-align: right;
         }
-        .styled-number span {
-            font-weight: 600;
+        .input-group span {
+            font-size: 16px;
+            color: #555;
             margin-left: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            height: 45px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            -moz-appearance: textfield; /* Hide arrows in Firefox */
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Hide arrows in Chrome/Safari */
+            margin: 0;
+        }
+        .input-group input[type="number"] {
+            border: none; /* Remove border for inputs inside .input-group */
         }
         input[type="submit"] {
             background-color: #27ae60;
@@ -98,6 +99,7 @@
             padding: 15px 30px;
             width: 100%;
             text-align: center;
+            margin-top: 20px;
         }
         .footer-content {
             display: flex;
@@ -111,6 +113,10 @@
         }
         .footer-right {
             text-align: right;
+        }
+        .footer-center {
+            text-align: center;
+            margin-top: 10px;
         }
         .disclaimer {
             font-weight: bold;
@@ -136,6 +142,31 @@
             }
         }
     </style>
+    <script>
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value);
+        }
+        
+        function handleSubmit(event) {
+            event.preventDefault();
+            let sip = parseFloat(document.getElementById('sip').value);
+            let years = parseInt(document.getElementById('years').value);
+            let rate = parseFloat(document.getElementById('rate').value) / 100 / 12;
+            let swpRate = parseFloat(document.getElementById('swpRate').value) / 100 / 12;
+            let swpYears = parseInt(document.getElementById('swpYears').value);
+            
+            let months = years * 12;
+            let futureValue = sip * ((Math.pow(1 + rate, months) - 1) / rate) * (1 + rate);
+            futureValue = Math.round(futureValue / 100) * 100;
+            
+            let swpMonths = swpYears * 12;
+            let swpAmount = (futureValue * swpRate) / (1 - Math.pow(1 + swpRate, -swpMonths));
+            swpAmount = Math.round(swpAmount / 100) * 100;
+            
+            document.getElementById('futureValue').innerText = `Future Value: ${formatCurrency(futureValue)}`;
+            document.getElementById('swpAmount').innerText = `SWP Amount per Month: ${formatCurrency(swpAmount)}`;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -147,12 +178,12 @@
             <label for="years">No. of Years:</label>
             <input type="number" id="years" name="years" required>
             <label for="rate">Assumed Rate of Return:</label>
-            <div class="styled-number">
+            <div class="input-group">
                 <input type="number" id="rate" name="rate" value="12" required>
                 <span>%</span>
             </div>
             <label for="swpRate">Assumed Rate of Return while doing SWP:</label>
-            <div class="styled-number">
+            <div class="input-group">
                 <input type="number" id="swpRate" name="swpRate" value="6" required>
                 <span>%</span>
             </div>
@@ -166,15 +197,17 @@
     <div class="footer">
         <div class="footer-content">
             <div class="footer-left">
-                * Capital becomes Nil at the end of the withdrawal period.<br>
-                * The above table is only for illustration purpose.
+                <p>* Capital becomes Nil at the end of the withdrawal period.</p>
+                <p>* The above table is only for illustration purpose.</p>
             </div>
             <div class="footer-right">
-                **SIP: Systematic Investment Plan<br>
-                **SWP: Systematic Withdrawal Plan
+                <p>**SIP: Systematic Investment Plan</p>
+                <p>**SWP: Systematic Withdrawal Plan</p>
             </div>
         </div>
-        <div class="disclaimer">Mutual Fund investments are subject to market risk. Please read the scheme related document carefully.</div>
+        <div class="footer-center">
+            <p>Mutual Fund investments are subject to market risk. Please read the scheme related document carefully.</p>
+        </div>
     </div>
 </body>
 </html>
