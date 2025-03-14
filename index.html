@@ -19,51 +19,56 @@
         .container {
             background: white;
             max-width: 500px;
-            padding: 30px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 100%; /* Ensure full width */
+            box-sizing: border-box; /* Include padding in width calculation */
         }
         h2 {
             color: #27ae60;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            font-size: 22px;
         }
         label {
             font-weight: 600;
             display: block;
-            margin-top: 15px;
+            margin-top: 8px;
             text-align: left;
+            font-size: 14px;
         }
         .input-group {
             display: flex;
             align-items: center;
             border: 1px solid #ddd;
             border-radius: 5px;
-            padding: 10px;
+            padding: 8px;
             width: 100%;
-            height: 45px;
+            height: 40px;
             background: #fff;
+            margin-top: 5px;
         }
         .input-group input {
             border: none;
             background: transparent;
-            font-size: 16px;
+            font-size: 14px;
             width: 100%;
             outline: none;
             text-align: right;
         }
         .input-group span {
-            font-size: 16px;
+            font-size: 14px;
             color: #555;
             margin-left: 5px;
         }
         input[type="number"] {
             width: 100%;
-            height: 45px;
-            padding: 10px;
+            height: 40px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 14px;
             -moz-appearance: textfield; /* Hide arrows in Firefox */
         }
         input[type="number"]::-webkit-outer-spin-button,
@@ -77,29 +82,30 @@
         input[type="submit"] {
             background-color: #27ae60;
             color: white;
-            font-size: 16px;
-            padding: 12px;
+            font-size: 14px;
+            padding: 10px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         input[type="submit"]:hover {
             background-color: #219150;
         }
         .logo {
-            width: 180px;
-            margin-bottom: 15px;
+            width: 150px;
+            margin-bottom: 10px;
         }
         .footer {
-            font-size: 14px;
+            font-size: 12px;
             color: #555;
             background: #fff;
-            padding: 15px 30px;
+            padding: 10px 20px;
             width: 100%;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
+            line-height: 1.4; /* Reduce line spacing */
         }
         .footer-content {
             display: flex;
@@ -116,12 +122,15 @@
         }
         .footer-center {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 8px; /* Reduce margin */
+        }
+        .footer p {
+            margin: 4px 0; /* Reduce margin between lines */
         }
         .disclaimer {
             font-weight: bold;
             font-style: italic;
-            margin-top: 10px;
+            margin-top: 8px;
             color: #d63031;
             text-align: center;
         }
@@ -132,10 +141,10 @@
             }
             .footer-left, .footer-right {
                 text-align: left;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
             .footer p {
-                margin: 5px 0;
+                margin: 3px 0; /* Further reduce margin for mobile */
             }
             .disclaimer {
                 text-align: left;
@@ -163,8 +172,8 @@
             let swpAmount = (futureValue * swpRate) / (1 - Math.pow(1 + swpRate, -swpMonths));
             swpAmount = Math.round(swpAmount / 100) * 100;
             
-            document.getElementById('futureValue').innerText = `Future Value: ${formatCurrency(futureValue)}`;
-            document.getElementById('swpAmount').innerText = `SWP Amount per Month: ${formatCurrency(swpAmount)}`;
+            document.getElementById('futureValue').innerText = `Future Value (at the end of the SIP period) ${formatCurrency(futureValue)}`;
+            document.getElementById('swpAmount').innerText = `SWP Amount per month ${formatCurrency(swpAmount)}`;
         }
     </script>
 </head>
@@ -173,26 +182,26 @@
         <img src="logo.jpeg" alt="Curate My Money Logo" class="logo">
         <h2>SIP & SWP Calculator</h2>
         <form onsubmit="handleSubmit(event)">
-            <label for="sip">SIP Amount:</label>
+            <label for="sip">Your SIP Amount (per month)</label>
             <input type="number" id="sip" name="sip" required>
-            <label for="years">No. of Years:</label>
+            <label for="years">No. of years planned to invest</label>
             <input type="number" id="years" name="years" required>
-            <label for="rate">Assumed Rate of Return:</label>
+            <label for="rate">Assumed Rate of Return</label>
             <div class="input-group">
                 <input type="number" id="rate" name="rate" value="12" required>
                 <span>%</span>
             </div>
-            <label for="swpRate">Assumed Rate of Return while doing SWP:</label>
+            <label for="swpRate">Assumed Rate of Return while doing SWP</label>
             <div class="input-group">
                 <input type="number" id="swpRate" name="swpRate" value="6" required>
                 <span>%</span>
             </div>
-            <label for="swpYears">SWP Period (Years):</label>
+            <label for="swpYears">SWP period (in years)</label>
             <input type="number" id="swpYears" name="swpYears" required>
             <input type="submit" value="Calculate">
         </form>
-        <h3 id="futureValue"></h3>
-        <h3 id="swpAmount"></h3>
+        <h3 id="futureValue" style="font-size: 16px; margin: 8px 0;"></h3>
+        <h3 id="swpAmount" style="font-size: 16px; margin: 8px 0;"></h3>
     </div>
     <div class="footer">
         <div class="footer-content">
